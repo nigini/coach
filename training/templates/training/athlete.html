@@ -1,0 +1,14 @@
+{{ athlete.name }}
+<hr>
+{% if activities_list %}
+<div>
+    Your last training activities:
+    <ul>
+        {% for activity in activities_list %}
+            <li> {{ activity }} </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+    Where are your activities!? Talk to the coach! ;) =\
+{% endif %}

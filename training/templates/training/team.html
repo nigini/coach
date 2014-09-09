@@ -1,0 +1,12 @@
+Who are you trying to reach from the team?
+
+{% if athletes_list %}
+    <ul>
+    {% for athlete in athletes_list %}
+        <li><a href={% url 'training:athlete' athlete.id %}>{{ athlete.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+<br>
+UPS! Where are everybody!? =\
+{% endif %}

@@ -11,6 +11,9 @@ class Athlete(models.Model):
             return None
     last_registered_activity_date.short_description = 'Date of last registered activity'
 
+    def last_activities(self, amount=10):
+        return Activity.objects.filter(athlete=self.id).order_by('-date')[:amount]
+
     def __str__(self):
         return self.name
 
@@ -21,4 +24,4 @@ class Activity(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return '{}: {}: {}'.format(self.athlete, self.date, self.description)
+        return '{}: {} - {}'.format(self.date, self.sport, self.description)
