@@ -23,5 +23,17 @@ class Activity(models.Model):
     description = models.CharField(max_length=1000)
     date = models.DateField()
 
+    def last_feedback(self):
+        feedback = ActivityFeedback.objects.get(activity=self.id)
+        if feedback:
+            return feedback.description
+        else:
+            return ''
+
     def __str__(self):
         return '{}: {} - {}'.format(self.date, self.sport, self.description)
+
+class ActivityFeedback(models.Model):
+    activity = models.ForeignKey(Activity)
+    description = models.CharField(max_length=1000)
+    #date = models.DateField()

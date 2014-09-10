@@ -1,11 +1,39 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+    function showHideFeedback(activityNumber) {
+        var fb_btn = "#feedback_btn_"+activityNumber;
+        var fb_div = "#feedback_div_"+activityNumber;
+        if ($(fb_btn).text() === "+") {
+            $(fb_div).show("fast");
+            $(fb_btn).text("-");
+        } else {
+           $(fb_div).hide("fast");
+           $(fb_btn).text("+");
+        }
+    }
+</script>
+
 {{ athlete.name }}
+
 <hr>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 {% if activities_list %}
 <div>
     Your last training activities:
     <ul>
         {% for activity in activities_list %}
-            <li> {{ activity }} </li>
+            <li> {{ activity }}
+                <button id="feedback_btn_{{ activity.id }}" type="button" onclick="showHideFeedback({{ activity.id }})" >+</button>
+                <div id="feedback_div_{{ activity.id }}" style="display: none">
+                    <form action="{% url 'training:feedback' athlete.id activity.id %}" method="post">
+                        {% csrf_token %}
+                        Feedback: <textarea name="feedback_text">{{ activity.last_feedback }}</textarea>
+                        <br><input type="submit">
+                    </form>
+                </div>
+            </li>
         {% endfor %}
     </ul>
 </div>
