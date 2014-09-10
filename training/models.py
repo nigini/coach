@@ -24,10 +24,10 @@ class Activity(models.Model):
     date = models.DateField()
 
     def last_feedback(self):
-        feedback = ActivityFeedback.objects.get(activity=self.id)
-        if feedback:
+        try:
+            feedback = ActivityFeedback.objects.get(activity=self.id)
             return feedback.description
-        else:
+        except ActivityFeedback.DoesNotExist:
             return ''
 
     def __str__(self):
