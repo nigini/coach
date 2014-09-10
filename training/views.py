@@ -28,7 +28,11 @@ def feedback(request, athlete_id, activity_id):
     if activity:
         try:
             feedback_description = request.POST['feedback_text']
-            activity_feedback = ActivityFeedback(activity=activity, description=feedback_description)
+            activity_feedback = ActivityFeedback.objects.get(activity=activity)
+            if activity_feedback:
+                activity_feedback.description = feedback_description
+            else:
+                activity_feedback = ActivityFeedback(activity=activity, description=feedback_description)
             activity_feedback.save()
             return HttpResponseRedirect(reverse('training:athlete', args=(athlete_id,)))
         except KeyError:
