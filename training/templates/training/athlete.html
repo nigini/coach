@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block scripts %}
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script>
     function showHideFeedback(activityNumber) {
@@ -12,31 +15,30 @@
         }
     }
 </script>
+{% endblock %}
 
-{{ athlete.name }}
+{% block content %}
+    <h2>{{ athlete.name }}</h2>
 
-<hr>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-{% if activities_list %}
-<div>
-    Your last training activities:
-    <ul>
-        {% for activity in activities_list %}
-            <li> {{ activity }}
-                <button id="feedback_btn_{{ activity.id }}" type="button" onclick="showHideFeedback({{ activity.id }})" >+</button>
-                <div id="feedback_div_{{ activity.id }}" style="display: none">
-                    <form action="{% url 'training:feedback' athlete.id activity.id %}" method="post">
-                        {% csrf_token %}
-                        Feedback: <textarea name="feedback_text">{{ activity.last_feedback }}</textarea>
-                        <br><input type="submit">
-                    </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-{% else %}
-    Where are your activities!? Talk to the coach! ;) =\
-{% endif %}
+    {% if activities_list %}
+        <div>
+            Your last training activities:
+            <ul>
+                {% for activity in activities_list %}
+                    <li> {{ activity }}
+                        <button id="feedback_btn_{{ activity.id }}" type="button" onclick="showHideFeedback({{ activity.id }})" >+</button>
+                        <div id="feedback_div_{{ activity.id }}" style="display: none">
+                            <form action="{% url 'training:feedback' athlete.id activity.id %}" method="post">
+                                {% csrf_token %}
+                                Feedback: <textarea name="feedback_text">{{ activity.last_feedback }}</textarea>
+                                <br><input type="submit">
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        Where are your activities!? Talk to the coach! ;) =\
+    {% endif %}
+{% endblock %}

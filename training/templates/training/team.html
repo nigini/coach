@@ -1,4 +1,8 @@
-Who are you trying to reach from the team?
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Who are you trying to reach from the team?</h2>
 
 {% if athletes_list %}
     <ul>
@@ -10,3 +14,5 @@ Who are you trying to reach from the team?
 <br>
 UPS! Where are everybody!? =\
 {% endif %}
+
+{% endblock %}

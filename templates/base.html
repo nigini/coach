@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>Coach & Training</title>
+    {% block scripts %}
+    {% endblock %}
+</head>
+
+<body>
+    <div>
+        {% if user.is_authenticated %}
+            <p>Good to see you, {{ user.username }}. <a href="{% url 'logout'%}">LOGOUT</a></p>
+        {% else %}
+            <p>Nice to see you here. Part of the team? <a href="{% url 'login' %}">LOGIN</a></p>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    {% if error_message %}
+        <div>
+            <p><strong>{{ error_message }}</strong></p>
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
