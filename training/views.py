@@ -13,7 +13,7 @@ def index(request, athlete_name=None):
 
 
 def get_athletes_list(request):
-    athletes_list = Athlete.objects.order_by('name')
+    athletes_list = sorted(Athlete.objects.all(), key=lambda x: x.name)
     return render(request, 'training/team.html', {'athletes_list': athletes_list})
 
 
@@ -28,10 +28,10 @@ def feedback(request, athlete_id, activity_id):
     if activity:
         try:
             feedback_description = request.POST['feedback_text']
-            activity_feedback = ActivityFeedback.objects.get(activity=activity)
-            if activity_feedback:
+            try:
+                activity_feedback = ActivityFeedback.objects.get(activity=activity)
                 activity_feedback.description = feedback_description
-            else:
+            except ActivityFeedback.DoesNotExist:
                 activity_feedback = ActivityFeedback(activity=activity, description=feedback_description)
             activity_feedback.save()
             return HttpResponseRedirect(reverse('training:athlete', args=(athlete_id,)))

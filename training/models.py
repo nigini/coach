@@ -1,7 +1,17 @@
+from django.contrib.auth.models import User
 from django.db import models
 
+
 class Athlete(models.Model):
-    name = models.CharField(max_length=200)
+
+    user = models.ForeignKey(User)
+
+    @property
+    def name(self):
+        name = self.user.first_name + ' ' + self.user.last_name
+        if name.strip() != '': return name
+        else: return self.user.username
+
 
     def last_registered_activity_date(self):
         last_activity = Activity.objects.filter(athlete=self.id).order_by('-date').first()
@@ -16,6 +26,7 @@ class Athlete(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Activity(models.Model):
     athlete = models.ForeignKey(Athlete)
@@ -32,6 +43,7 @@ class Activity(models.Model):
 
     def __str__(self):
         return '{}: {} - {}'.format(self.date, self.sport, self.description)
+
 
 class ActivityFeedback(models.Model):
     activity = models.ForeignKey(Activity)
